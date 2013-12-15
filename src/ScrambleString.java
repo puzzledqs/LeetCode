@@ -8,7 +8,7 @@ public class ScrambleString
 		String s1 = "abcdefghijklmnopq";
 		String s2 = "efghijklmnopqcadb";
 		ScrambleString test = new ScrambleString();
-		System.out.println(test.isScramble2(s1, s2));
+		System.out.println(test.isScramble(s1, s2));
 		
 	}
 	
@@ -55,31 +55,6 @@ public class ScrambleString
 		return false;
 	}
 	
-	public boolean isScramble2(String s1, String s2)
-	{
-		if (s1.equals(s2))
-			return true;
-		if (s1.length() != s2.length())
-			return false;
-		
-		int l = s1.length();
-		
-		for (int split = 1; split < l; split++)
-		{
-			if (isScramble2(s1.substring(0, split), s2.substring(0, split))
-					&& isScramble2(s1.substring(split), s2.substring(split)))
-			{
-				return true;
-			}
-			
-			if (isScramble2(s1.substring(0, split), s2.substring(s2.length()-split)) 
-					&& isScramble2(s1.substring(split), s2.substring(0, s2.length()-split)))
-			{
-				return true;
-			}
-		}
-		return false;	
-	}
 	
 	public boolean isScramble(String s1, String s2) 
 	{
@@ -121,6 +96,7 @@ public class ScrambleString
 							continue;
 						}
 						
+						// reverse order
 						if (matchResults[start2][end1-split+1][split] ==  1
 								&& matchResults[start2+split][start1][ll-split] == 1)
 						{
