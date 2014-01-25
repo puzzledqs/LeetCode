@@ -2,17 +2,6 @@ import java.util.*;
 
 public class WordBreakII {
 	
-	public static void main(String[] args) {
-		String s = "catsanddog";
-		Set<String> dict = new Set<String> {{
-			add("cat");
-			add("cats");
-			add("and");
-			add("sand");
-			add("dog");
-		}}
-	}
-	
 	public ArrayList<String> wordBreak(String s, Set<String> dict) {
 		boolean[] matchResult = new boolean[s.length()+1];
 		ArrayList<ArrayList<Integer>> backPtr = new ArrayList<ArrayList<Integer>>();

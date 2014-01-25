@@ -25,7 +25,7 @@ public class TextJustification {
 			}
 			if (j == i || j + 1 == words.length) {  // left justified...
 				String tmp = words[i];
-				for (int ks = 0; k < j - i; k++)
+				for (int k = 0; k < j - i; k++)
 					tmp += " " + words[i + k + 1];
 				for (; len < L; len++)
 					tmp += " ";

@@ -8,7 +8,7 @@
  * }
  */
  
-public class SumRootToLeftNumbers {
+public class SumRootToLeafNumbers {
 	public static int sum;
 	public int sumNumbers(TreeNode root) {
 		sum = 0;

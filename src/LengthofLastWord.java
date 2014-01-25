@@ -1,17 +1,12 @@
-public class LengthofLastWord {
+public class LengthOfLastWord {
 	public int lengthOfLastWord(String s) {
 		int len = 0;
-		int i = 0;
-		while (i < s.length()) {
-			if (s.charAt(i) == ' ') 
-				i++;
-			else {
-				len = 0;
-				while (i < s.length() && s.charAt(i) != ' ') {
-					len++;
-					i++;
-				}
-			}
+		int i = s.length() - 1;
+		while (i >= 0 && s.charAt(i) == ' ') // skip trailing spaces
+		    i--;
+		while (i >= 0 && s.charAt(i) != ' ') { // count
+		    len++;
+		    i--;
 		}
 		return len;
 	}

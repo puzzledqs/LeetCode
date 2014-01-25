@@ -1,9 +1,4 @@
 public class DivideTwoIntegers {
-	public static void main(String[] args) {
-		int dividend = 1;
-		int divisor = 1;
-		int res = new DivideTwoIntegers().divide(dividend, divisor);
-	}
 	public int divide(int dividend, int divisor) {
 		int sign = 1;
 		if (dividend < 0) sign = -sign;
