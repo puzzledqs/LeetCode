@@ -1,28 +1,34 @@
 import java.util.*;
 public class CombinationSum {
-	public ArrayList<ArrayList<Integer>> combinationSum(int[] candidates, int target) {
-		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
-		if (candidates == null || candidates.length == 0)  return result;
-		Arrays.sort(candidates);
-		ArrayList<Integer> cur_res = new ArrayList<Integer>();
-		search(result, cur_res, candidates, target, 0);
-		
-		return result;
-	}
-	
-	void search(ArrayList<ArrayList<Integer>> result, ArrayList<Integer> cur_res, int[] candidates, int target, int k) {
-		if (target == 0) {
-			result.add(new ArrayList<Integer>(cur_res));
-			return;
-		}
-		
-		for (int i = k; i < candidates.length; i++) {
-			target -= candidates[i];
-			if (target < 0) return;
-			cur_res.add(candidates[i]);
-			search(result, cur_res, candidates, target, i);
-			cur_res.remove(cur_res.size()-1);
-			target += candidates[i];
-		}
-	}
+	ArrayList<ArrayList<Integer>> combinationSum(int[] candidates, int target) {
+    	ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+    	if (candidates == null || candidates.length == 0) {
+    	    if (target == 0) {
+    	        result.add(new ArrayList<Integer>());
+    	    }
+    	    return result;
+    	}
+    	
+    	Arrays.sort(candidates);
+    	LinkedList<Integer> cur_res = new LinkedList<Integer>();
+    	dfs(result, cur_res, candidates, 0, target);
+    	return result;
+    }
+    
+    void dfs(ArrayList<ArrayList<Integer>> result, LinkedList<Integer> cur_res, int[] candidates, int start, int target) {
+        if (target == 0) {
+            result.add(new ArrayList<Integer>(cur_res));
+            return;
+        }
+        
+        for (int i = start; i < candidates.length; i++) {
+            if (candidates[i] > target)
+                break;
+            target -= candidates[i];
+            cur_res.add(candidates[i]);
+            dfs(result, cur_res, candidates, i, target);
+            target += candidates[i];
+            cur_res.removeLast();
+        }
+    }
 }

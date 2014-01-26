@@ -11,52 +11,40 @@
  */
 public class ReorderList {
 	public void reorderList(ListNode head) {
-		if (head == null) return;
+		if (head == null || head.next == null) return;
 		
-		int size = 0;
-		ListNode n_cur = head;
-		while (n_cur != null) {
-			size++;
-			n_cur = n_cur.next;
+		ListNode fast = head;
+		ListNode slow = head;
+		while (fast.next != null && fast.next.next != null) {
+			fast = fast.next.next;
+			slow = slow.next;
 		}
 		
-		int mid = (size + 1) / 2;
-		int pos = 1;
-		n_cur = head;
-		while (pos < mid) {
-			pos++;
-			n_cur = n_cur.next;
+		ListNode n = slow.next;
+		slow.next = null;
+		ListNode prev = null;
+		while (n != null) {
+			ListNode tmp = n.next;
+			n.next = prev;
+			prev = n;
+			n = tmp;
 		}
-		ListNode head2 = n_cur.next;
-		n_cur.next = null;
-		
-		// reverse the second list
-		ListNode n_prev = null;
-		n_cur = head2;
-		while (n_cur != null) {
-			ListNode next = n_cur.next; // save next node
-			n_cur.next = n_prev;
-			n_prev = n_cur;
-			n_cur = next;
-		}
-		head2 = n_prev;
-		// end reverse
-		
-		// merge two sub-lists
-		ListNode head1 = head;
+		ListNode head2 = prev;
 		ListNode dummyHead = new ListNode(0);
-		n_cur = dummyHead;
-		while (head1!= null && head2 != null) {
-			n_cur.next = head1;
-			head1 = head1.next;
-			n_cur = n_cur.next;
-			n_cur.next = head2;
+		n = dummyHead;
+		while (head != null && head2 != null) {
+			n.next = head;
+			head = head.next;
+			n = n.next;
+			n.next = head2;
 			head2 = head2.next;
-			n_cur = n_cur.next;
+			n = n.next;
 		}
-		if (head1 == null) n_cur.next = head2;
-		else n_cur.next = head1;
-		head = dummyHead.next;	
-		// end merge
+		if (head != null)
+			n.next = head;
+		else
+			n.next = head2;
+		
+		head = dummyHead.next;
 	}
 }

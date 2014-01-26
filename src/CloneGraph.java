@@ -10,46 +10,32 @@ import java.util.*;
 
 public class CloneGraph {
 	public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
-		if (node == null) return node;
+		if (node == null) return null;
 		
-		Set<Integer> visited = new HashSet<Integer>();
 		Queue<UndirectedGraphNode> q = new LinkedList<UndirectedGraphNode>();
-		Map<UndirectedGraphNode, UndirectedGraphNode> old2new = 
-								new HashMap<UndirectedGraphNode, UndirectedGraphNode>();
+		HashMap<Integer, UndirectedGraphNode> label2node = new HashMap<Integer, UndirectedGraphNode>();
 		q.add(node);
 		while (!q.isEmpty()) {
 			UndirectedGraphNode n = q.remove();
-			if (visited.contains(n.label))
-				continue;
-			
-			visited.add(n.label);
-			UndirectedGraphNode new_n;   // get the new node
-			if (old2new.containsKey(n))
-				new_n = old2new.get(n);
+			UndirectedGraphNode new_n = null;
+			if (label2node.containsKey(n.label))
+				new_n = label2node.get(n.label);
 			else {
-				new_n = new UndirectedGraphNode(n.label);  
-				old2new.put(n, new_n);
+				new_n = new UndirectedGraphNode(n.label);
+				label2node.put(n.label, new_n);
 			}
-			
-			for (int i = 0; i < n.neighbors.size(); i++) { 
-				UndirectedGraphNode nb = n.neighbors.get(i);
-				q.add(nb); // add this neighbor to queue
-				UndirectedGraphNode new_nb;  // get the new neighbors
-				if (old2new.containsKey(nb))
-					new_nb = old2new.get(nb);
+			for (UndirectedGraphNode nb : n.neighbors) {
+				UndirectedGraphNode new_nb = null;
+				if (label2node.containsKey(nb.label))
+					new_nb = label2node.get(nb.label);
 				else {
 					new_nb = new UndirectedGraphNode(nb.label);
-					old2new.put(nb, new_nb);
+					label2node.put(nb.label, new_nb);
+					q.add(nb);
 				}
 				new_n.neighbors.add(new_nb);
 			}
 		}
-		return old2new.get(node);
+		return label2node.get(node.label);
 	}
 }
-
-class UndirectedGraphNode {
-	      int label;
-	      ArrayList<UndirectedGraphNode> neighbors;
-	      UndirectedGraphNode(int x) { label = x; neighbors = new ArrayList<UndirectedGraphNode>(); }
-	  };

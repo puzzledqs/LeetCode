@@ -9,23 +9,23 @@
  */
  
 public class SumRootToLeafNumbers {
-	public static int sum;
-	public int sumNumbers(TreeNode root) {
-		sum = 0;
-		if (root != null)
-			dfs(root, 0);
-		return sum;
-	}
-	
-	void dfs(TreeNode node, int val) {
-		val = val * 10 + node.val;
-		if (node.left == null && node.right == null) {
-			sum += val;
-			return;
-		}
-		if (node.left != null)
-			dfs(node.left, val);
-		if (node.right != null)
-			dfs(node.right, val);
-	}
+	int sum;
+    public int sumNumbers(TreeNode root) {
+        if (root == null) return 0;
+        sum = 0;
+        preOrder(root, 0);
+        return sum;
+    }
+    
+    void preOrder(TreeNode root, int path) {
+        path = path * 10 + root.val;
+        if (root.left == null && root.right == null) 
+            sum += path;
+        else {
+            if (root.left != null)
+                preOrder(root.left, path);
+            if (root.right != null)
+                preOrder(root.right, path);
+        }
+    }
 }

@@ -1,52 +1,37 @@
 import java.util.*;
 public class WordLadder {
-	
 	public int ladderLength(String start, String end, HashSet<String> dict) {
-		if (start.equals(end)) return 0;
-		if (dict == null) return 0;
+		if (dict == null) dict = new HashSet<String>();
 		
-		HashSet<String> visit_s = new HashSet<String>();
-		HashSet<String> visit_e = new HashSet<String>();
-		Queue<String> qstart = new LinkedList<String>();
-		Queue<String> qend = new LinkedList<String>();
-		
-		
-		qstart.add(start); visit_s.add(start);
-		qend.add(end); visit_e.add(end);
+		Queue<String> q1 = new LinkedList<String>();
+		HashSet<String> visit = new HashSet<String>();
 		int len = 1;
-		
-		while (!qstart.isEmpty() && !qend.isEmpty()) {
+		q1.add(start);
+		visit.add(start);
+		while (!q1.isEmpty()) {
+			Queue<String> q2 = new LinkedList<String>();
 			len++;
-			Queue<String> qtmp = new LinkedList<String>();
-			while (!qstart.isEmpty()) {
-				String s = qstart.remove();
-				for (int i = 0; i < s.length(); i++) {
-					for (int j = 0; j < 26; j++) {
-						char newchar = (char)('a' + j);
-						if (newchar == s.charAt(i))
+			while (!q1.isEmpty()) {
+				String word = q1.remove();
+				for (int i = 0; i < word.length(); i++) {
+					char[] charArray = word.toCharArray();
+					for (int j = 'a'; j <= 'z'; j++) {
+						char newc = (char) j;
+						if (newc == word.charAt(i))
 							continue;
-						char[] charArray = s.toCharArray();
-						charArray[i] = newchar;
-						String newString = String.valueOf(charArray);
-						if (dict.contains(newString)) {
-							if (visit_e.contains(newString))
-								return len;
-							if (!visit_s.contains(newString)) {
-								qtmp.add(newString);
-								visit_s.add(newString);
-							}
+						charArray[i] = newc;
+						String s = String.valueOf(charArray);
+						if (s.equals(end))
+							return len;
+						if (dict.contains(s) && !visit.contains(s)) {
+							visit.add(s);
+							q2.add(s);
 						}
 					}
 				}
 			}
-			// swap start and end
-			qstart = qend;
-			qend = qtmp;
-			HashSet<String> tmp = visit_e;
-			visit_e = visit_s;
-			visit_s = tmp;
+			q1 = q2;
 		}
 		return 0;
 	}
-	
 }

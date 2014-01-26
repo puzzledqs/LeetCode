@@ -1,44 +1,45 @@
 import java.util.*;
 
 public class WordBreakII {
-	
 	public ArrayList<String> wordBreak(String s, Set<String> dict) {
-		boolean[] matchResult = new boolean[s.length()+1];
-		ArrayList<ArrayList<Integer>> backPtr = new ArrayList<ArrayList<Integer>>();
-		matchResult[0] = true;
-		for (int i = 0; i <= s.length(); i++)
-			backPtr.add(new ArrayList<Integer>());
+		ArrayList<String> result = new ArrayList<String>();
+		if (s == null || s.length() == 0) return result;
 		
-		for (int i = 1; i <= s.length(); i++) {
+		boolean[] match = new boolean[s.length() + 1];
+		ArrayList<ArrayList<Integer>> prevPos = new ArrayList<ArrayList<Integer>>();
+		for (int i = 0; i <= s.length(); i++)
+			prevPos.add(new ArrayList<Integer>());
+		
+		match[0] = true;
+		for (int i = 0; i < s.length(); i++) {
+			if (!match[i])
+				continue;
 			for (String word : dict) {
-				int prev_end = i - word.length();
-				if (prev_end >= 0) {
-					if (matchResult[prev_end] && s.substring(prev_end, i).equals(word)) {
-						matchResult[i] = true;
-						backPtr.get(i).add(prev_end);
+				int end = word.length() + i;
+				if (end <= s.length()) {
+					if (s.substring(i, end).equals(word)) {
+						match[end] = true;
+						prevPos.get(end).add(i);
 					}
 				}
 			}
 		}
-		
-		ArrayList<String> result = new ArrayList<String>();
-		if (matchResult[s.length()])
-			backTrack(s, matchResult, backPtr, s.length(), "", result);
-			
+		String cur_res = "";
+		backTrack(result, s, prevPos, cur_res, s.length());
 		return result;
 	}
 	
-	void backTrack(String s, boolean[] matchResult, ArrayList<ArrayList<Integer>> backPtr, 
-					int cur_end, String cur_res, ArrayList<String> result) {
-		if (cur_end == 0) {
-			result.add(cur_res);
-			return;
-		}
-		
-		for (int i = 0; i < backPtr.get(cur_end).size(); i++) {
-			int prev_end = backPtr.get(cur_end).get(i);
-			String new_res = s.substring(prev_end, cur_end) + " " + cur_res;
-			backTrack(s, matchResult, backPtr, prev_end, new_res, result);
+	void backTrack(ArrayList<String> result, String s, ArrayList<ArrayList<Integer>> prevPos,
+					String cur_res, int cur_pos) {
+		ArrayList<Integer> pos = prevPos.get(cur_pos);
+		for (Integer p : pos) {
+			if (p == 0) {
+				String new_res = s.substring(0, cur_pos) + cur_res;
+				result.add(new_res);
+				continue;
+			}
+			String news = " " + s.substring(p, cur_pos) + cur_res;
+			backTrack(result, s, prevPos, news, p);
 		}
 	}
 }

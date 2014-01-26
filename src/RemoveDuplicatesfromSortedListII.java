@@ -5,51 +5,20 @@ public class RemoveDuplicatesfromSortedListII {
 		
 		ListNode dummyHead = new ListNode(0);
 		dummyHead.next = head;
-		ListNode n_cur = head;
-		ListNode prevnode = dummyHead;
-		while (n_cur != null) {
-			int val = n_cur.val;
-			while (n_cur != null && n_cur.val == val)
-				n_cur = n_cur.next;
-			if (n_cur == prevnode.next.next) { // n_cur moves 1 step only
-				prevnode = prevnode.next;
+		ListNode n1 = dummyHead;
+		while (n1.next != null) {
+			ListNode n2 = n1.next;
+			int cnt = 0;
+			int val = n2.val;
+			while (n2 != null && n2.val == val) {
+				cnt++;
+				n2 = n2.next;
 			}
-			else {
-				prevnode.next = n_cur;
-			}
+			if (cnt > 1) 
+				n1.next = n2;
+			else
+				n1 = n1.next;
 		}
-		return dummyHead.next;
-	}
-	public ListNode deleteDuplicates2(ListNode head) {
-		if (head == null) return head;
-		
-		ListNode dummyHead = new ListNode(0);
-		dummyHead.next = head;
-		ListNode prevnode = dummyHead;
-		ListNode n_cur = head;
-		int prevval = head.val;
-		boolean dup = false;
-		
-		while (n_cur != null) {
-			if (n_cur.next == null || n_cur.next.val != prevval) {
-				if (!dup) {
-					prevnode = n_cur;
-					n_cur = n_cur.next;
-				}
-				else {
-					prevnode.next = n_cur.next;
-					n_cur = n_cur.next;
-				}
-				if (n_cur != null)
-					prevval = n_cur.val;
-				dup = false;
-			}
-			else {
-				dup = true;
-				n_cur = n_cur.next;
-			}
-		}
-		
 		return dummyHead.next;
 	}
 }

@@ -1,32 +1,34 @@
 public class PalindromePartitioningII {
 	public int minCut(String s) {
-		boolean[][] isPalin = new boolean[s.length()][s.length()+1];
-		for (int i = 1; i <= s.length(); i++) {
-			for (int j = 0; j <= s.length()-i; j++) {
-				if (i == 1) {
-					isPalin[j][j] = true;
-					isPalin[j][j+1] = true; // [j:j+1)
-				}
-				else {
-					if (isPalin[j+1][j+i-1] == true && s.charAt(j) == s.charAt(j+i-1))
-						isPalin[j][j+i] = true;
-				}
+		if (s == null || s.length() == 0) return 0;
+		
+		int slen = s.length();
+		boolean[][] table = new boolean[slen][slen + 1];
+		for (int i = 0; i < slen; i++) {
+			table[i][i+1] = true;
+			table[i][i] = true;
+		}
+		for (int l = 2; l <= slen; l++) {
+			for (int i = 0; i + l <= slen; i++) {
+				int start = i + 1;
+				int end = i + l - 1;
+				if (table[start][end] && s.charAt(i) == s.charAt(i + l - 1))
+					table[i][i + l] = true;
 			}
 		}
 		
-		int[] minCount = new int[s.length()+1]; // minCount[pos] --> cut for [0:pos)
-		minCount[0] = -1;
-		for (int i = 1; i <= s.length(); i++) {
-			int tmp = s.length();
+		int[] cut = new int[slen + 1];
+		cut[0] = 0;
+		for (int i = 1; i < cut.length; i++)
+				cut[i] = Integer.MAX_VALUE;
+		for (int i = 1; i <= slen; i++) {
 			for (int j = 0; j < i; j++) {
-				if (isPalin[j][i]) {
-					if (minCount[j] + 1 < tmp)
-						tmp = minCount[j] + 1;
+				if (table[j][i]) {
+					if (cut[j] + 1 < cut[i])
+						cut[i] = cut[j] + 1;
 				}
 			}
-			minCount[i] = tmp;
 		}
-		return minCount[s.length()];
+		return cut[slen] - 1;
 	}
-
 }

@@ -1,37 +1,41 @@
 import java.util.*;
 public class CombinationSumII {
 	public ArrayList<ArrayList<Integer>> combinationSum2(int[] num, int target) {
-		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
-		if (num == null || num.length == 0) return result;	
-		Arrays.sort(num);
-		ArrayList<Integer> cur_res = new ArrayList<Integer>();
-		search(result, cur_res, num, target, 0);
-		return result;
-	}
-	
-	void search(ArrayList<ArrayList<Integer>> result, ArrayList<Integer> cur_res, int[] num, int target, int start) {
-		if (target == 0) {
-			result.add(new ArrayList<Integer>(cur_res));
-			return;
-		}
-		if (start == num.length) return;
-		if (target < 0) return;
-		
-		int i;
-		for (i = start; i < num.length; i++)
-			if (num[start] != num[i])
-				break;
-		int end = i;
-		
-		search(result, cur_res, num, target, end);
-		for (i = start; i < end; i++) {
-			target -= num[start];
-			cur_res.add(num[start]);
-			search(result, cur_res, num, target, end);
-		}
-		for (int j = start; j < i; j++) {
-			cur_res.remove(cur_res.size()-1);
-		}
-	}
-	
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if (num == null || num.length == 0) {
+            if (target == 0) {
+                result.add(new ArrayList<Integer>());
+            }
+            return result;
+        }
+        
+        Arrays.sort(num);
+        LinkedList<Integer> cur_res = new LinkedList<Integer>();
+        dfs(result, cur_res, num, 0, target);
+        return result;
+    }
+    
+    void dfs(ArrayList<ArrayList<Integer>> result, LinkedList<Integer> cur_res, int[] num, int start, int target){
+        if (target == 0) {
+            result.add(new ArrayList<Integer>(cur_res));
+            return;
+        }
+        if (start == num.length)
+            return;
+        int end = start;
+        for (; end < num.length; end++)
+            if (num[end] != num[start])
+                break;
+        dfs(result, cur_res, num, end, target);
+        int i = start;
+        for (; i < end; i++) {
+            if (num[start] > target)
+                break;
+            target -= num[start];
+            cur_res.add(num[start]);
+            dfs(result, cur_res, num, end, target);
+        }
+        for (int j = start; j < i; j++)
+            cur_res.removeLast();
+    }
 }

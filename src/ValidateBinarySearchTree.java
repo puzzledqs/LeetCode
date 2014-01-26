@@ -1,23 +1,13 @@
 public class ValidateBinarySearchTree {
-	int prev;
-	boolean valid;
 	public boolean isValidBST(TreeNode root) {
+		return isValid(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	}
+	
+	public boolean isValid(TreeNode root, int min, int max) {
 		if (root == null) return true;
-		prev = Integer.MIN_VALUE;
-		valid = true;
-		inOrder(root);
-		return valid;
-	}
-	
-	void inOrder(TreeNode root) {
-		if (root == null || !valid) return;
 		
-		inOrder(root.left);
-		if (prev >= root.val) valid = false;
-		else
-			prev = root.val;
-		inOrder(root.right);
+		if (root.val <= min || root.val >= max)
+			return false;
+		return isValid(root.left, min, root.val) && isValid(root.right, root.val, max);
 	}
-	
-	
 }

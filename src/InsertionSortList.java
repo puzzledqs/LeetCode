@@ -15,23 +15,20 @@
 public class InsertionSortList {
 	public ListNode insertionSortList(ListNode head) {
 		if (head == null) return head;
-	
-		ListNode tmpHead = new ListNode(0);
-		ListNode n_cur = head;
-		int size = 0;
 		
-		while (n_cur != null) {
-			ListNode n_tmp = tmpHead;
-			for (int i = 0; i < size; i++) {
-				if (n_tmp.next.val > n_cur.val) break;
-				n_tmp = n_tmp.next;
+		ListNode dummyHead = new ListNode(0);
+		while (head != null) {
+			ListNode n = dummyHead;
+			while (n.next != null) {
+				if (n.next.val > head.val)
+					break;
+				n = n.next;
 			}
-			ListNode tmp = n_cur;
-			n_cur = n_cur.next;
-			tmp.next = n_tmp.next;
-			n_tmp.next = tmp;
-			size++;
+			ListNode tmp = head;
+			head = head.next;
+			tmp.next = n.next;
+			n.next = tmp;
 		}
-		return tmpHead.next;
+		return dummyHead.next;
 	}
 }

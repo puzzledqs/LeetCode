@@ -1,40 +1,29 @@
 import java.util.*;
 public class LongestConsecutiveSequence {
-	
-	public static void main(String[] args) {
-		int[] test = {100, 4, 200, 1, 3, 2};
-		int len = new LongestConsecutiveSequence().longestConsecutive(test);
-		System.out.println(len);
-	
-	}
-	
 	public int longestConsecutive(int[] num) {
-		Set<Integer> set = new HashSet<Integer>();
-		for (int i = 0; i < num.length; i++)
-			set.add(num[i]);
-		
-		int maxlen = 0;
-		while (set.iterator().hasNext()) {
-			int seed = set.iterator().next();
-			set.remove(seed);
-			int len = 1;
-			int left = seed - 1;
-			int right = seed + 1;
-			while (set.contains(left) || set.contains(right)) {
-				if (set.contains(left)) {
-					set.remove(left);
-					len++;
-					left--;
-				}
-				if (set.contains(right)) {
-					set.remove(right);
-					len++;
-					right++;
-				}
-			}
-			if (len > maxlen)
-				maxlen = len;
-		}
-		return maxlen;
-	}
+    	if (num == null || num.length == 0) return 0;
+    	
+    	int max = 0;
+    	Set<Integer> set = new HashSet<Integer>();
+    	for (int i = 0; i < num.length; i++)
+    		set.add(num[i]);
+    	for (int i = 0; i < num.length; i++) {
+    		if (!set.contains(num[i]))
+    			continue;
+    		int right = num[i] + 1;
+    		int left = num[i] - 1;
+    		while (set.contains(right)) {
+    			set.remove(right);
+    			right++;
+    		}
+    		while (set.contains(left)) {
+    			set.remove(left);
+    			left--;
+    		}
+    		int tmp = right - left - 1;
+    		if (tmp > max)
+    			max = tmp;
+    	}
+    	return max;
+    }
 }

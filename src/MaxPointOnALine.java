@@ -10,35 +10,39 @@
 import java.util.*;
 
 public class MaxPointOnALine {
-    public int maxPoints(Point[] points) {
- 		int max_num = 0;
- 		for (int i = 0; i < points.length; i++) {
- 			Point pt0  = points[i];
- 			HashMap<Float, Integer> map = new HashMap<Float, Integer>();
- 			int cnt_overlap = 1;
- 			float slope;
- 			int current_max = 0;
- 			for (int j = i + 1; j < points.length; j++) {
- 				Point pt = points[j];
- 				if (pt.x == pt0.x) {
- 					if (pt.y == pt0.y) {
- 						cnt_overlap++;
- 						continue;
- 					}
- 					else slope = Float.MAX_VALUE;
- 				}
- 				else if (pt.y == pt0.y) slope = 0.f;
- 				else slope = (float)(pt.y - pt0.y) / (float)(pt.x - pt0.x);
- 				
- 				Integer val = map.get(slope);
- 				val = val == null ? 1 : val + 1;
- 				map.put(slope, val);
- 				if (val > current_max) current_max = val;
- 			}
- 			current_max += cnt_overlap;
- 			if (current_max > max_num) max_num = current_max;
- 		}
- 		
- 		return max_num;
- 	}
+	public int maxPoints(Point[] points) {
+		int max_found = 0;
+		if (points == null) return 0;
+		for (int i = 0; i < points.length; i++) {
+			int tmp_max = 0;
+			int dup = 1;
+			int cx = points[i].x;
+			int cy = points[i].y;
+			HashMap<Double, Integer> count = new HashMap<Double, Integer>();
+			for (int j = i+1; j < points.length; j++) {
+				if (points[j].x == cx && points[j].y == cy) {
+					dup++;
+					continue;
+				}
+				Double slope;
+				if (points[j].x == cx)
+					slope = Double.MAX_VALUE;
+				else if (points[j].y == cy)
+				    slope = 0.;
+				else
+					slope = (double)(points[j].y - cy) / (double)(points[j].x - cx);
+				int tmp = 0;
+				if (count.containsKey(slope))
+					tmp = count.get(slope);
+				tmp++;
+				count.put(slope, tmp);
+				if (tmp > tmp_max)
+					tmp_max = tmp;
+			}
+			tmp_max += dup;
+			if (tmp_max > max_found)
+				max_found = tmp_max;
+		}
+		return max_found;
+	}
 }

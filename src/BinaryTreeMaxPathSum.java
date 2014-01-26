@@ -6,24 +6,23 @@ class TreeNode {
 }
 
 public class BinaryTreeMaxPathSum {
-	static int maxSum;
-	public int maxPathSum(TreeNode root) {
-		maxSum = Integer.MIN_VALUE;
-		maxSideSum(root);
-		return maxSum;
-	}
-	
-	public int maxSideSum(TreeNode node) {
-		if (node == null) return 0;
-		
-		int leftSideSum = maxSideSum(node.left);
-		int rightSideSum = maxSideSum(node.right);
-		int cur_sum = node.val;
-		if (leftSideSum > 0) cur_sum += leftSideSum;
-		if (rightSideSum > 0) cur_sum += rightSideSum;
-		if (cur_sum > maxSum) maxSum = cur_sum;
-		
-		int tmp = leftSideSum > rightSideSum ? leftSideSum : rightSideSum;
-		return tmp > 0 ? (tmp + node.val) : node.val;
-	}
+	int max;
+    public int maxPathSum(TreeNode root) {
+    	max = Integer.MIN_VALUE;
+    	maxSidePathSum(root);
+    	return max;
+    }
+    
+    int maxSidePathSum(TreeNode root) {
+    	if (root == null) return 0;
+    	int leftSum = maxSidePathSum(root.left);
+    	int rightSum = maxSidePathSum(root.right);
+    	int sum = root.val;
+    	if (leftSum > 0) sum += leftSum;
+    	if (rightSum > 0) sum += rightSum;
+    	if (sum > max) max = sum;
+    	
+    	int sideSum = leftSum > rightSum ? leftSum : rightSum;
+    	return root.val + (sideSum > 0 ? sideSum : 0);
+    }
 }

@@ -1,55 +1,39 @@
 public class WordSearch {
-	
-	public static void main(String args[]) {
-		char[][] board = {{'A', 'B', 'C', 'E'},
-							{'S', 'F', 'C', 'S'},
-							{'A', 'D', 'E', 'E'}};
-		String s = "SEE";
-		boolean result = new WordSearch().exist(board, s);
-		System.out.println(result);
-		
-	}
-	
-	boolean isFind;
-	public boolean exist(char[][] board, String s) {
-		if (s == null || s.length() == 0) return true;
-		if (board == null) return false;
-		
-		isFind = false;
-		boolean[][] flag = new boolean[board.length][board[0].length];
-		for (int i = 0; i < board.length; i++) {
+	public int[] dx = {1, 0, -1, 0};
+	public int[] dy = {0, 1, 0, -1};
+	public boolean exist(char[][] board, String word) {
+		if (word == null || word.length() == 0) return true;
+		if (board == null || board.length == 0 || board[0].length == 0)
+			return false;
+		boolean[][] visit = new boolean[board.length][board[0].length];
+		for (int i = 0; i < board.length; i++)
 			for (int j = 0; j < board[0].length; j++)
-				if (board[i][j] == s.charAt(0))
-					dfs(board, flag, s, 0, i, j);
-		}
-		return isFind;
+				if (word.charAt(0) == board[i][j] && dfs(board, visit, i, j, 1, word))
+					return true;
+		return false;
 	}
 	
-	int[] di = {1, 0, -1, 0};
-	int[] dj = {0, 1, 0, -1};
-	
-	void dfs(char[][] board, boolean[][] flag, String s, int start, int i, int j) {
-		if (isFind) return;		
-		if (start == s.length()-1) {
-			isFind = true;
-			return;
-		}
-		flag[i][j] = true;
-		for (int k = 0; k < 4; k++) {
-			int ii = i + di[k];
-			int jj = j + dj[k];
-			if (isValid(flag, ii, jj) && board[ii][jj] == s.charAt(start+1)) {
-				dfs(board, flag, s, start + 1, ii, jj);
+	// search for the dth character from around current position (row, col)
+	boolean dfs(char[][] board, boolean[][] visit, int row, int col, int d, String word) {
+		if (d == word.length()) return true;
+		visit[row][col] = true;
+		for (int i = 0; i < 4; i++) {
+			int r = row + dx[i];
+			int c = col + dy[i];
+			if (isValid(visit, r, c) && word.charAt(d) == board[r][c]) {
+				if (dfs(board, visit, r, c, d + 1, word)) {
+					visit[row][col] = false;
+					return true;
+				}
 			}
 		}
-		flag[i][j] = false;
-		
+		visit[row][col] = false;
+		return false;
 	}
 	
-	boolean isValid(boolean[][] flag, int i, int j) {
-		if (i < 0 || i >= flag.length) return false;
-		if (j < 0 || j >= flag[0].length) return false;
-		if (flag[i][j] == true) return false;
-		return true;
+	boolean isValid(boolean[][] visit, int r, int c) {
+		if (r < 0 || r >= visit.length) return false;
+		if (c < 0 || c >= visit[0].length) return false;
+		return !visit[r][c];
 	}
 }
