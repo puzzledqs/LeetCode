@@ -1,20 +1,17 @@
 public class TwoSum {
 	public int[] twoSum(int[] numbers, int target) {
-		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-		for (int i = 0; i < numbers.length; i++) {
-			map.put(numbers[i], i);
-		}
 		int[] result = new int[2];
-		for (int i = 0; i < numbers.length; i++) {
-			if (map.containsKey(target - numbers[i])) {
-				int pos = map.get(target - numbers[i]);
-				if (pos != i) {
-					result[0] = i + 1;
-					result[1] = pos + 1;
-					break;
-				}
-			}
-		}
-		return result;
-	}
+		HashMap<Integer, Integer> num2idx = new HashMap<Integer, Integer>();
+        	for (int i = 0; i < numbers.length; i++) {
+            	int num = numbers[i];
+            	int need = target - num;
+            	if (num2idx.containsKey(need)) {
+                	result[0] = num2idx.get(need) + 1;
+                	result[1] = i + 1;
+                	break;
+            	}
+            	num2idx.put(num, i);
+        }
+        return result;
+    }
 }
