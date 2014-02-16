@@ -13,5 +13,5 @@ public class TwoSum {
 	            	num2idx.put(num, i);
 	        }
 	        return result;
-    }
+    	}
 }
