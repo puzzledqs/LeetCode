@@ -10,7 +10,7 @@ public class LongestValidParentheses {
 				stk.push(i);
 			else {
 				if (stk.isEmpty() || s.charAt(stk.peek()) == ')')
-				stk.push(i);
+					stk.push(i);
 				else {
 					stk.pop();
 					int prev_pos = -1;
