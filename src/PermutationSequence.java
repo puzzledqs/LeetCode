@@ -6,34 +6,28 @@ public class PermutationSequence {
 		
 	}
 	
-	public String getPermutation(int n, int k) {
-		boolean[] use = new boolean[n];
-		char[] perm = new char[n];
-		k = (k - 1) % factor(n);
-		
-		for (int i = 0; i < n; i++) {
-			int tmp = factor(n - i - 1);
-			int l = k / tmp;
-			k = k % tmp;
-			for (int j = 0; j < use.length; j++) {
-				if (!use[j]) {
-					if (l == 0) {
-						perm[i] = (char)('0' + j + 1);
-						use[j] = true;
-						break;
-					}
-					else
-						l--;	
-				}
-			}
-		}
-		return new String(perm);
-	}
-	
-	int factor(int k) {
-		int prod = 1;
-		for (int i = 1; i <= k; i++)
-			prod *= i;
-		return prod;
-	}
+    public String getPermutation(int n, int k) {
+        int fac = 1;
+        boolean[] has = new boolean[n];
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i < n; i++)
+            fac *= i;
+        k--;
+        for (int i = n; i >= 1; i--) {
+            int j = k / fac;
+            k %= fac;
+            if (i > 1) fac /= (i - 1);
+            int l;
+            for (l = 0; l < n; l++) {
+                if (has[l]) continue;
+                if (j == 0) {
+                    has[l] = true;
+                    break;
+                }
+                j--;
+            }
+            sb.append(l + 1);
+        }
+        return sb.toString();
+    }
 }
