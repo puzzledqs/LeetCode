@@ -1,32 +1,27 @@
 public class NextPermutation {
-	public void nextPermutation(int[] num) {
-		if (num == null || num.length == 0) return;
-		
-		boolean found = false;
-		int pos1 = 0;
-		int pos2 = 0;
-		for (pos1 = num.length - 2; pos1 >= 0; pos1--) {
-			for (pos2 = num.length - 1; pos2 > pos1; pos2--) {
-				if (num[pos1] < num[pos2]) {
-					found = true;
-					break;
-				}
-			}
-			if (found)
-				break;
-		}
-		if (found) {
-			int tmp = num[pos2];
-			num[pos2] = num[pos1];
-			num[pos1] = tmp;
-		}
-		int left = pos1 + 1;
-		int right = num.length - 1;
-		while (left < right) {
-			int tmp = num[left];
-			num[left] = num[right];
-			num[right] = tmp;
-			left++; right--;
-		}
-	}
+    public void nextPermutation(int[] num) {
+        if (num.length < 2) return;
+        
+        int i, j, tmp;
+        for (i = num.length - 1; i >= 1; i--) {
+            if (num[i] > num[i - 1]) break;
+        }
+        if (i > 0) {
+            j = i;
+            while (j < num.length && num[j] > num[i - 1])
+                j++;
+            j--;
+            tmp = num[j];
+            num[j] = num[i - 1];
+            num[i - 1] = tmp;
+        }
+        j = num.length - 1;
+        while (i < j) {
+            tmp = num[j];
+            num[j] = num[i];
+            num[i] = tmp;
+            i++;
+            j--;
+        }
+    }
 }
