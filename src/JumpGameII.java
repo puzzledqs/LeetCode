@@ -1,24 +1,17 @@
 public class JumpGameII {
-	public int jump(int[] A) {
-		if (A == null || A.length <= 1) return 0;
-		
-		int pos = 0;
-		int range = A[0];
-		int newrange = range;
-		int step = 1;
-		while (range < A.length - 1) {
-            while (pos <= range) {
-                if (pos + A[pos] > newrange)
-                    newrange = pos + A[pos];
-                pos++;
+    public int jump(int[] A) {
+        int step = 0;
+        int prev_range = -1;
+        int range = 0;
+        while (range < A.length - 1) {
+            int max = range;
+            for (int i = prev_range + 1; i <= range; i++) {
+                max = Math.max(max, i + A[i]);
             }
-            if (newrange == range)
-                break;
-            range = newrange;
+            prev_range = range;
+            range = max;
             step++;
-		}
-		if (range < A.length - 1)
-		    return  -1;
-		return step;
-	}
+        }
+        return step;
+    }
 }
