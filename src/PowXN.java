@@ -1,18 +1,18 @@
 public class PowXN {
-	public double pow(double x, int n) {
-		if (x == 0) return 0;
-		
-		boolean neg = n < 0;
-		n = Math.abs(n);
-		double result = 1;
-		while (n > 0) {
-			if ((n & 1) > 0)
-				result *= x;
-			x = x * x;
-			n >>= 1;
-		}
-		if (neg)
-			result = 1 / result;
-		return result;
-	}
+    public double pow(double x, int n) {
+        if (x == 0.0) return 0;
+        boolean neg = n < 0;
+        long nn = Math.abs(n);
+        
+        double res = 1;
+        while (nn > 0) {
+            if ((nn & 1) == 1)
+                res *= x;
+            nn >>= 1;
+            x *= x;
+        }
+        if (neg)
+            res = 1 / res;
+        return res;
+    }
 }
