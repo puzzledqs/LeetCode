@@ -5,13 +5,13 @@ public class RemoveDuplicatesfromSortedListII {
         dummyHead.next = head;
         ListNode prev = dummyHead;
         while (prev.next != null) {
-            ListNode n_cur = prev.next;
-            while (n_cur.next != null && n_cur.next.val == prev.next.val)
+            ListNode n_cur = prev.next.next;
+            while (n_cur != null && n_cur.val == prev.next.val)
                 n_cur = n_cur.next;
-            if (n_cur != prev.next)
-                prev.next = n_cur.next;
+            if (n_cur == prev.next.next)
+                prev = prev.next;
             else
-                prev = n_cur;
+                prev.next = n_cur;
         }
         return dummyHead.next;
     }
