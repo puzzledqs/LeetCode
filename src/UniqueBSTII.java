@@ -21,7 +21,6 @@ public class UniqueBSTII {
                     result.add(root);
                 }
             }
-            
         }
         return result;    
     }
