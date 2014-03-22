@@ -1,23 +1,23 @@
 public class RemoveDuplicatesfromSortedArrayII {
-	public int removeDuplicates(int[] A) {
-		if (A == null) return 0;
-		int p1 = 0;
-		int p2 = 0;
-		while (p1 < A.length) {
-			A[p2] = A[p1];
-			boolean twice = false;
-			int curVal = A[p1];
-			p1++;
-			p2++;
-			while (p1 < A.length && A[p1] == curVal) {
-				if (!twice) {
-					twice = true;
-					A[p2] = A[p1];
-					p2++;
-				}
-				p1++;
-			}
-		}
-		return p2;
-	}
+    public static int removeDuplicates(int[] A) {
+        if (A.length == 0) return 0;
+        
+        int j = 0;
+        boolean flag = false;
+        for (int i = 1; i < A.length; i++) {
+            if (A[i] != A[j]) {
+                j++;
+            	A[j] = A[i];
+                flag = false;
+            }
+            else {
+                if (!flag) {
+                	j++;
+                    A[j] = A[i];
+                    flag = true;
+                }
+            }
+        }
+        return j + 1;
+    }
 }
