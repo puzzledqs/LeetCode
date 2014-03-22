@@ -1,14 +1,15 @@
 public class JumpGame {
-	public boolean canJump(int[] A) {
-		int reach = 0;
-		for (int i = 0; i < A.length; i++) {
-			if (i > reach) 
-				return false;
-			int tmp = i + A[i];
-			reach = tmp > reach ? tmp : reach;
-			if (reach >= A.length - 1) 
-				return true;
-		}
-		return true;
-	}
+    public boolean canJump(int[] A) {
+        int prev = -1;
+        int range = 0;
+        while (range < A.length - 1) {
+            int max = range;
+            for (int i = prev + 1; i <= range; i++)
+                max = Math.max(max, i + A[i]);
+            if (max == range) return false;
+            prev = range;
+            range = max;
+        }
+        return
+    }
 }
