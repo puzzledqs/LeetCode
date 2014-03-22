@@ -1,4 +1,24 @@
 public class RomanToInteger {
+	
+    public int romanToInt2(String s) {
+        if (s.length() == 0) return 0;
+        int[] tab = new int[256];
+        tab[(int)'I'] = 1; tab[(int)'V'] = 5;
+        tab[(int)'X'] = 10; tab[(int)'L'] = 50;
+        tab[(int)'C'] = 100; tab[(int)'D'] = 500;
+        tab[(int)'M'] = 1000;
+        
+        int sum = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int v = tab[(int)s.charAt(i)];
+            if (i == s.length() - 1 || v >= tab[(int)s.charAt(i + 1)])
+                sum += v;
+            else
+                sum -= v;
+        }
+        return sum;
+    }
+	
 	public int romanToInt(String s) {
 		if (s == null || s.length() == 0) return 0;
 		
